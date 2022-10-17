@@ -1,0 +1,4 @@
+
+
+class CheckerAPIError(RuntimeError):
+    pass

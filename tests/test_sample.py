@@ -1,5 +1,6 @@
 import pytest
 
+
 def raises_error():
     raise SystemExit(1)
 
@@ -10,7 +11,6 @@ def adds_one(x):
 
 def test_adds_one():
     assert adds_one(4) == 5
-
 
 
 def test_mytest():
