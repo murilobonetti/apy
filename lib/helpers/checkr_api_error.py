@@ -1,6 +1,6 @@
-from lib.checkr_api_error import CheckerAPIError
+class CheckerAPIError(RuntimeError):
+    pass
 
 
 class CheckerAPIFailedCreation(CheckerAPIError):
     pass
-
