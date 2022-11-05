@@ -80,7 +80,7 @@ class CheckrAPI:
         self,
         candidate_id: str,
         package: str,
-        communication_types=None,
+        communication_types: Optional[list[str]] = None,
         node: Optional[str] = None,
         tags: Optional[str] = None,
         work_locations: list[dict[str, str]] = None,

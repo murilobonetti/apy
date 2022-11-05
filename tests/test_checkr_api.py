@@ -8,58 +8,57 @@ from lib.models.invitation import Invitation
 def test_candidate_creation_successful():
     candidate = Candidate(
         checkr_api=CheckrAPI(SECRET_API_KEY, STAGING_URL),
-        first_name="King",
-        last_name="Burguer",
-        email="murilo.bonetti@pickups.mobi",
         driver_license_state="CA",
         driver_license_number="O2233344",
+        email="murilo.bonetti@pickups.mobi",
+        first_name="King",
+        last_name="Burguer",
         work_locations=[{"country": "US", "state": "FL", "city": "Miami"}],
     )
 
     assert candidate.id is None
-    did_it_create = candidate.create()
-    assert did_it_create is True
+    creation_successful = candidate.create()
+    assert creation_successful is True
 
 
 def test_candidate_creation_failed():
     candidate = Candidate(
         checkr_api=CheckrAPI("secret not so secret", STAGING_URL),
-        first_name="King",
-        last_name="Burguer",
-        email="murilo.bonetti@pickups.mobi",
         driver_license_state="CA",
         driver_license_number="O2233344",
+        email="murilo.bonetti@pickups.mobi",
+        first_name="King",
+        last_name="Burguer",
         work_locations=[{"country": "US", "state": "FL", "city": "Miami"}],
     )
 
     assert candidate.id is None
-    did_it_create = candidate.create(raise_on_failure=False)
-    assert did_it_create is False
+    creation_failed = candidate.create(raise_on_failure=False)
+    assert creation_failed is False
 
 
 def test_candidate_creation_and_invitation_successful():
     candidate = Candidate(
         checkr_api=CheckrAPI(SECRET_API_KEY, STAGING_URL),
-        first_name="King",
-        last_name="Burguer",
-        email="murilo.bonetti@pickups.mobi",
         driver_license_state="CA",
         driver_license_number="O2233344",
+        email="murilo.bonetti@pickups.mobi",
+        first_name="King",
+        last_name="Burguer",
         work_locations=[{"country": "US", "state": "FL", "city": "Miami"}],
     )
 
     assert candidate.id is None
-    did_it_create = candidate.create()
-    assert did_it_create is True
+    candidate_creation_successful = candidate.create()
+    assert candidate_creation_successful is True
 
     invitation = Invitation(
         checkr_api=CheckrAPI(SECRET_API_KEY, STAGING_URL),
-        package="basic_crim",
         candidate_id=candidate.id,
-        work_locations=candidate.work_locations
+        package="basic_crim",
+        work_locations=candidate.work_locations,
     )
 
     assert invitation.id is None
     invitation_created = invitation.create()
     assert invitation_created is True
-

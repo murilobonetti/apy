@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Any
 
 from requests import HTTPError
 
@@ -14,7 +14,6 @@ class Report:
     package: str
     node: str
     work_locations: list[dict[str, str]]
-
     id: Optional[str] = None
     self_disclosures: Optional[list[dict[str, str]]] = None
     tags: Optional[list[str]] = None
@@ -61,24 +60,28 @@ class Report:
     program_id: Optional[str] = None
 
     def create(self, raise_on_failure: bool = True) -> bool:
-
         try:
-            response = self.checkr_api.create_report(
-                package=self.package,
-                candidate_id=self.candidate_id,
-                node=self.node,
-                work_locations=self.work_locations
-            )
+            report = self._create_via_api()
         except HTTPError:
             if raise_on_failure:
                 raise
             return False
 
-        if "id" not in response:
+        if "id" not in report:
             if raise_on_failure:
                 raise CheckerAPIFailedCreation
             return False
 
-        self.id = response["id"]
+        self.id = report["id"]
 
         return True
+
+    def _create_via_api(self) -> dict[str, Any]:
+        report_created = self.checkr_api.create_report(
+            package=self.package,
+            candidate_id=self.candidate_id,
+            node=self.node,
+            work_locations=self.work_locations,
+        )
+
+        return report_created
